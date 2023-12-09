@@ -2,6 +2,7 @@ package org.example;
 
 public class Calculator {
 
+    //Check if equation contains only digits and allowed for calculation characters
     public static boolean isEquationCorrect(String equation) {
 
         var equationCharArray = equation.replaceAll("\\s", "").toCharArray();
@@ -23,6 +24,7 @@ public class Calculator {
         return parenthnesesAreEqual && mathCharsPlacedCorrect;
     }
 
+    //Check if quantity of ')' sign is equal to quantity of '('
     private static boolean checkEqualityOfParenthneses(char[] equation){
 
         int quantityOfParenthesis = 0;
@@ -44,6 +46,8 @@ public class Calculator {
         return false;
     }
 
+    //Check if equation ends with digit, 'x' or ')' sign
+    //Check if math signs are not placed one after another
     private static boolean mathCharPlacedCorrect(char[] equation){
         String mathChars = "-+*/=.";
         String exceptChars = "-x";
