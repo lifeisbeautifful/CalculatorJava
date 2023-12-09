@@ -2,25 +2,28 @@ package org.example;
 
 public class Calculator {
 
-    public static boolean IsEquationCorrect(String equation) {
+    public static boolean isEquationCorrect(String equation) {
 
-        var equationCharArray = equation.trim().toCharArray();
-        String patterns = "+)-*/(=x. ";
+        var equationCharArray = equation.replaceAll("\\s", "").toCharArray();
+        String allowedChars = "+)-*/(=x. ";
 
         for (char item: equationCharArray) {
 
                 if (!Character.isDigit(item)) {
 
-                    if (!patterns.contains(String.valueOf(item))) {
+                    if (!allowedChars.contains(String.valueOf(item))) {
                         return false;
                     }
                 }
             }
 
-        return CheckEqualityOfParenthneses(equationCharArray);
+        var parenthnesesAreEqual = checkEqualityOfParenthneses(equationCharArray);
+        var mathCharsPlacedCorrect = mathCharPlacedCorrect(equationCharArray);
+
+        return parenthnesesAreEqual && mathCharsPlacedCorrect;
     }
 
-    private static boolean CheckEqualityOfParenthneses(char[] equation){
+    private static boolean checkEqualityOfParenthneses(char[] equation){
 
         int quantityOfParenthesis = 0;
 
@@ -39,5 +42,33 @@ public class Calculator {
             return true;
         }
         return false;
+    }
+
+    private static boolean mathCharPlacedCorrect(char[] equation){
+        String mathChars = "-+*/=.";
+        String exceptChars = "-x";
+        String allowedEquationEndChars = "x)";
+
+        var lastEquationChar = equation[equation.length-1];
+
+        if(!Character.isDigit(lastEquationChar) && !allowedEquationEndChars.contains(String.valueOf(lastEquationChar))){
+            return false;
+        }
+
+        for(int i = 0; i < equation.length-1; i++){
+
+            var IsCurrentCharMath = mathChars.contains(String.valueOf(equation[i]));
+            var IsNextCharMath = mathChars.substring(1).contains(String.valueOf(equation[i+1]));
+
+            if(IsCurrentCharMath && IsNextCharMath){
+                return false;
+            }
+
+            if(equation[i] == equation[i+1] && exceptChars.contains(String.valueOf(equation[i]))){
+                return false;
+            }
+        }
+
+        return true;
     }
 }

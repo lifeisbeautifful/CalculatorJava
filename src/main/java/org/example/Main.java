@@ -6,6 +6,6 @@ public class Main {
     public static void main(String[] args) {
 
 
-        System.out.println(Calculator.IsEquationCorrect(" 2*x+5 =17 "));
+        System.out.println(Calculator.isEquationCorrect(" -*(x+5+x)+5=10"));
     }
 }
