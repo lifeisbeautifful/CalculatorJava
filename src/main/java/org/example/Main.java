@@ -8,16 +8,18 @@ import bsh.EvalError;
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
 
-    static String equation = "2*((x+5+x)+5)=10";
-    static String root = "7";
+    static String equation = "1+x=2";
+    static String root = "1";
 
-    static double allowedRootDeviation = Math.pow(10, -9);
+    static final double allowedRootDeviation = Math.pow(10, -9);
 
     public static void main(String[] args) throws EvalError {
 
+        addCorrectEquationAndRootToDB(equation, root, allowedRootDeviation);
+
     }
 
-    private static void addCorrectEquationAndRootToDB(String equation, String root) {
+    private static void addCorrectEquationAndRootToDB(String equation, String root, double allowedDiff) throws EvalError {
 
         String jdbcUrl = "jdbc:postgresql://localhost:5432/Equation";
         String username = "postgres";
@@ -25,14 +27,24 @@ public class Main {
 
         if (Calculator.isEquationCorrect(equation)) {
 
+            var equationPartsDiff = Double.valueOf(Calculator.calculateEquatPartsDiff(equation, root).toString());
+
+            Double rootParam = null; ;
+            String insertCorrectEquationData = "INSERT INTO test (equation, roots) VALUES (?, null)";
+
             try {
                 Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-                System.out.println("Connected");
-                String sql = "INSERT INTO test (equation) VALUES (?)";
+                PreparedStatement statement = connection.prepareStatement(insertCorrectEquationData);
 
-                PreparedStatement statement = connection.prepareStatement(sql);
+                if(equationPartsDiff <= allowedDiff){
+                    rootParam = Double.valueOf(root);
+                    insertCorrectEquationData = "INSERT INTO test (equation, roots) VALUES (?, ?)";
+
+                    statement = connection.prepareStatement(insertCorrectEquationData);
+                    statement.setDouble(2, rootParam);
+                }
+
                 statement.setString(1, equation);
-
                 statement.executeUpdate();
                 connection.close();
             } catch (SQLException ex) {
@@ -40,4 +52,5 @@ public class Main {
             }
         }
     }
+
 }

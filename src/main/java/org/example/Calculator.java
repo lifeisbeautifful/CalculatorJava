@@ -82,7 +82,7 @@ public class Calculator {
     //Split equation by '=' sign on two parts, perform all math operations,
     //then subtracts from left part right part of equation and returns difference
     //between left and right parts in an object
-    private static Object calculateEquatPartsDiff(String equation, String root) throws EvalError {
+    public static Object calculateEquatPartsDiff(String equation, String root) throws EvalError {
 
         String calcResults = "";
 
