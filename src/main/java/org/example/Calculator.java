@@ -1,5 +1,8 @@
 package org.example;
 
+import bsh.EvalError;
+import bsh.Interpreter;
+
 public class Calculator {
 
     //Check if equation contains only digits and allowed for calculation characters
@@ -74,5 +77,23 @@ public class Calculator {
         }
 
         return true;
+    }
+
+    //Split equation by '=' sign on two parts, perform all math operations,
+    //then subtracts from left part right part of equation and returns difference
+    //between left and right parts in an object
+    private static Object calculateEquatPartsDiff(String equation, String root) throws EvalError {
+
+        String calcResults = "";
+
+        var splitedByEqualSign = equation.replaceAll("x", root).split("=");
+        Interpreter interpreter = new Interpreter();
+
+        for (var eqPart: splitedByEqualSign) {
+            calcResults += interpreter.eval(eqPart);
+            calcResults += "-";
+        }
+
+        return interpreter.eval(calcResults.substring(0, calcResults.length()-1));
     }
 }

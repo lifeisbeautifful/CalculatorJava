@@ -26,14 +26,9 @@
             <version>5.10.0</version>
         </dependency>
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.6.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.6.0</version>
+        <groupId>org.apache.maven.shared</groupId>
+        <artifactId>maven-script-interpreter</artifactId>
+        <version>1.4</version>
         </dependency>
     </dependencies>
 
